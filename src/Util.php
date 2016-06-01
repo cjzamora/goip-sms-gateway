@@ -18,7 +18,8 @@ namespace GoIP;
  * @author   Charles Zamora <czamora@openovate.com>
  * @standard PSR-2
  */
-class Util extends Base {
+class Util extends Base 
+{
     /**
      * Parse buffer as an array.
      *

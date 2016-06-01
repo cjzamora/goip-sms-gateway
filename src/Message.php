@@ -18,7 +18,8 @@ namespace GoIP;
  * @author   Charles Zamora <czamora@openovate.com>
  * @standard PSR-2
  */
-class Message {
+class Message 
+{
     /**
      * ACK Response Message.
      *
