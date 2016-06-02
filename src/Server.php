@@ -179,7 +179,7 @@ class Server extends Event
                 // initialize response
                 $message = new Message(); 
                 // generate ack message
-                $message  = $message->getAck($data['req']);
+                $message  = $message->getConstant('ACK_MESSAGE', $data['req'], 200);
 
                 // send ACK response
                 $acked = socket_sendto($this->socket, $message, strlen($message), 0, $from, $port);
@@ -237,6 +237,9 @@ class Server extends Event
      */
     public function end()
     {
+        // close the socket
+        socket_close($this->socket);
+        
         // set the flag to end everything
         $this->end = true;
 

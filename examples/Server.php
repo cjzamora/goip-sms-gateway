@@ -15,7 +15,7 @@ require dirname(__DIR__) . '/src/Server.php';
 // initialize server
 // - hostname to bind to
 // - port to bind to
-$server = new GoIP\Server('192.168.1.45', 44444);
+$server = new GoIP\Server('192.168.1.52', 44444);
 
 $server
 // set timeout before reading next data
@@ -28,7 +28,7 @@ $server
 
 // on request data
 ->on('data', function($server, $buffer, $host, $port) {
-    echo 'Server got buffer data: ' . $host . ':' . $port . PHP_EOL;
+    echo 'Server got buffer data from: ' . $host . ':' . $port . PHP_EOL;
     echo GoIP\Util::parseString($buffer);
     echo PHP_EOL;
 })
