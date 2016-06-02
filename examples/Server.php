@@ -19,7 +19,7 @@ $server = new GoIP\Server('192.168.1.52', 44444);
 
 $server
 // set timeout before reading next data
-->setReadTimeout(2)
+->setReadTimeout(1)
 
 // on connection bind
 ->on('bind', function($server) {
@@ -27,21 +27,21 @@ $server
 })
 
 // on request data
-->on('data', function($server, $buffer) {
-    echo 'Server got buffer data from: ' . $server->getOrigin('host') . ':' . $server->getOrigin('port') . PHP_EOL;
-    echo GoIP\Util::parseString($buffer);
-    echo PHP_EOL;
-})
+// ->on('data', function($server, $buffer) {
+//     echo 'Server got buffer data from: ' . $server->getOrigin('host') . ':' . $server->getOrigin('port') . PHP_EOL;
+//     echo GoIP\Util::parseString($buffer);
+//     echo PHP_EOL;
+// })
 
 // on keep-alive request ack
-->on('ack', function($server) {
-    echo 'Keep-Alive request acknowledged.' . PHP_EOL . PHP_EOL;
-})
+// ->on('ack', function($server) {
+//     echo 'Keep-Alive request acknowledged.' . PHP_EOL . PHP_EOL;
+// })
 
 // on ack failed
-->on('ack-fail', function() {
-    echo 'Keep-Alive request acknowledgement failed.' . PHP_EOL . PHP_EOL;
-})
+// ->on('ack-fail', function() {
+//     echo 'Keep-Alive request acknowledgement failed.' . PHP_EOL . PHP_EOL;
+// })
 
 // on message receive
 ->on('message', function($server, $buffer) {
@@ -53,9 +53,9 @@ $server
 })
 
 // on wait (waiting for valid data)
-->on('wait', function($server) {
-    echo 'Waiting for the client to send data.' . PHP_EOL . PHP_EOL;
-})
+// ->on('wait', function($server) {
+//     echo 'Waiting for the client to send data.' . PHP_EOL . PHP_EOL;
+// })
 
 // on server end
 ->on('end', function() {

@@ -230,9 +230,6 @@ class Server extends Event
 
             // if we have a message
             if(!empty($message)) {
-                // set last receive id
-                $this->recent[$message['RECEIVE']] = $buffer;
-
                 // send receive acknowledgement
                 $received = $this->request($from, $port)->receivedAck($message['RECEIVE'], 'OK');
 
