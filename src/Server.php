@@ -68,6 +68,13 @@ class Server extends Event
     protected $recent = array();
 
     /**
+     * Origin information.
+     *
+     * @var array
+     */
+    protected $origin = array('host' => null, 'port' => null);
+
+    /**
      * Initialize socket connection
      * and start accepting connection
      * through loop.
@@ -138,6 +145,42 @@ class Server extends Event
     }
 
     /**
+     * Get binded host.
+     *
+     * @return  string
+     */
+    public function getHost()
+    {
+        return $this->host;
+    }
+
+    /**
+     * Get binded port.
+     *
+     * @return  int
+     */
+    public function getPort()
+    {
+        return $this->port;
+    }
+
+    /**
+     * Get request origin.
+     *
+     * @param   string
+     * @return  array
+     */
+    public function getOrigin($type = null)
+    {   
+        // if type is set
+        if(!is_null($type)) {
+            return isset($this->origin[$type]) ? $this->origin[$type] : null;
+        }
+
+        return $this->origin;
+    }
+
+    /**
      * Start listening and receiving
      * data from the clients.
      *
@@ -155,6 +198,12 @@ class Server extends Event
             // read from the current socket
             $request = socket_recvfrom($this->socket, $buffer, 2048, 0, $from, $port);
 
+            // set request origin
+            $this->origin = array(
+                'host' => $from,
+                'port' => $port
+            );
+
             // if we receive nothing
             if(is_null($request) || !$request) {
                 // trigger wait event, just let them
@@ -169,7 +218,7 @@ class Server extends Event
             }
 
             // trigger request event
-            $this->trigger('data', $this, $buffer, $from, $port);
+            $this->trigger('data', $this, $buffer);
 
             // parse buffer as array
             $data = Util::parseArray($buffer);
@@ -190,7 +239,7 @@ class Server extends Event
                     $this->trigger('ack-fail', $this);
                 } else {
                     // trigger ack event
-                    $this->trigger('ack', $this, $from, $port);
+                    $this->trigger('ack', $this);
                 }
 
                 // timeout for a while
@@ -215,7 +264,7 @@ class Server extends Event
                 $this->recent[$message['RECEIVE']] = $buffer;
 
                 // trigger message event
-                $this->trigger('message', $this, $buffer, $from, $port);
+                $this->trigger('message', $this, $buffer);
 
                 // timeout for a while
                 sleep($this->timeout);

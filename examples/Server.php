@@ -22,13 +22,13 @@ $server
 ->setReadTimeout(5)
 
 // on connection bind
-->on('bind', function($server, $host, $port) {
-    echo 'Socket binded to: ' . $host . ':' . $port . PHP_EOL . PHP_EOL;
+->on('bind', function($server) {
+    echo 'Socket binded to: ' . $server->getHost() . ':' . $server->getPort() . PHP_EOL . PHP_EOL;
 })
 
 // on request data
-->on('data', function($server, $buffer, $host, $port) {
-    echo 'Server got buffer data from: ' . $host . ':' . $port . PHP_EOL;
+->on('data', function($server, $buffer) {
+    echo 'Server got buffer data from: ' . $server->getOrigin('host') . ':' . $server->getOrigin('port') . PHP_EOL;
     echo GoIP\Util::parseString($buffer);
     echo PHP_EOL;
 })
@@ -45,7 +45,7 @@ $server
 
 // on message receive
 ->on('message', function($server, $buffer) {
-    echo "\033[32mServer got a message: \033[0m" . PHP_EOL;
+    echo "\033[32mServer got a message from: ' . $server->getOrigin('host') . ':' . $server->getOrigin('port') . ' \033[0m" . PHP_EOL;
     echo "\033[32m" . GoIP\Util::parseString($buffer) . " \033[0m" ;
     echo PHP_EOL;
 })
