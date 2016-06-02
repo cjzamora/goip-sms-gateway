@@ -59,14 +59,7 @@ class Server extends Event
      * @var bool
      */
     protected $end = false;
-
-    /**
-     * Last received id.
-     *
-     * @var int
-     */
-    protected $recent = array();
-
+    
     /**
      * Origin information.
      *
@@ -212,7 +205,9 @@ class Server extends Event
                 $this->trigger('wait', $this);
 
                 // timeout for a while
-                sleep($this->timeout);
+                if(!$this->end) {
+                    sleep($this->timeout);
+                }
 
                 continue;
             }
@@ -225,13 +220,8 @@ class Server extends Event
 
             // if keep alive message
             if(isset($data['req'])) {
-                // initialize response
-                $message = new Message(); 
-                // generate ack message
-                $message  = $message->getConstant('ACK_MESSAGE', $data['req'], 200);
-
                 // send ACK response
-                $acked = socket_sendto($this->socket, $message, strlen($message), 0, $from, $port);
+                $acked = $this->request($from, $port)->ackMessage($data['req'], 200);
 
                 // successfully acked?
                 if($acked === FALSE) {
@@ -243,7 +233,9 @@ class Server extends Event
                 }
 
                 // timeout for a while
-                sleep($this->timeout);
+                if(!$this->end) {
+                    sleep($this->timeout);
+                }
 
                 continue;
             }
@@ -251,23 +243,21 @@ class Server extends Event
             // try to check if buffer has message
             $message = Util::getMessage($buffer);
 
-            // ignore the message if it has
-            // the same receive id as the last
-            if(isset($message['RECEIVE'])
-            && isset($this->recent[$message['RECEIVE']])) {
-                continue;
-            }
-
             // if we have a message
             if(!empty($message)) {
                 // set last receive id
                 $this->recent[$message['RECEIVE']] = $buffer;
 
+                // send receive acknowledgement
+                $received = $this->request($from, $port)->receivedAck($message['RECEIVE'], 'OK');
+
                 // trigger message event
                 $this->trigger('message', $this, $buffer);
 
                 // timeout for a while
-                sleep($this->timeout);
+                if(!$this->end) {
+                    sleep($this->timeout);
+                }
             }
         }
 
@@ -277,6 +267,17 @@ class Server extends Event
         }
 
         return $this;
+    }
+
+    /**
+     * Decorator for Request Class.
+     *
+     * @return  GoIP\Request
+     */
+    public function request($host, $port)
+    {
+        // return request class
+        return new Request($this->socket, $host, $port);
     }
 
     /**

@@ -56,6 +56,13 @@ class Message
     const END_REQUEST = 'DONE %s\n';
 
     /**
+     * SMS Receive acknowledgement.
+     *
+     * @const string
+     */
+    const RECEIVE_SMS_ACK = 'RECEIVE %s %s\n';
+
+    /**
      * Get the request message constant
      * and return it's formatted value.
      *

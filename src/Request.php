@@ -83,7 +83,7 @@ class Request extends Base
      * @param   object
      * @return  $this
      */
-    public function __construct($socket, $host, $port, $password)
+    public function __construct($socket, $host, $port, $password = null)
     {
         // set the socket
         $this->socket   = $socket;
@@ -93,6 +93,38 @@ class Request extends Base
         $this->port     = $port;
         // set the password
         $this->password = $password;
+    }
+
+    /**
+     * Acknowldgement response.
+     *
+     * @param   int
+     * @param   int
+     * @return  bool
+     */
+    public function ackMessage($id, $status = 200)
+    {
+        // generate ack message
+        $message = $this->message()->getConstant('ACK_MESSAGE', $id, $status);
+
+        // send the request
+        return $this->send($message);
+    }
+
+    /**
+     * SMS Receive acknowledgement.
+     *
+     * @param   int
+     * @param   string
+     * @return  bool
+     */
+    public function receivedAck($id, $status)
+    {
+        // generate ack message
+        $message = $this->message()->getConstant('RECEIVE_SMS_ACK', $id, $status);
+
+        // send the request
+        return $this->send($message);
     }
 
     /**

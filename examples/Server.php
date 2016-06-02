@@ -19,7 +19,7 @@ $server = new GoIP\Server('192.168.1.52', 44444);
 
 $server
 // set timeout before reading next data
-->setReadTimeout(5)
+->setReadTimeout(2)
 
 // on connection bind
 ->on('bind', function($server) {
@@ -45,9 +45,11 @@ $server
 
 // on message receive
 ->on('message', function($server, $buffer) {
-    echo "\033[32mServer got a message from: ' . $server->getOrigin('host') . ':' . $server->getOrigin('port') . ' \033[0m" . PHP_EOL;
+    echo "\033[32mServer got a message from: " . $server->getOrigin('host') . ":" . $server->getOrigin('port') . " \033[0m" . PHP_EOL;
     echo "\033[32m" . GoIP\Util::parseString($buffer) . " \033[0m" ;
     echo PHP_EOL;
+
+    // $server->end();
 })
 
 // on wait (waiting for valid data)
