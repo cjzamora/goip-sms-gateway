@@ -212,9 +212,7 @@ class Client extends Event
         }
 
         // send bulk sms request
-        foreach(range(1, 5) as $value) {
-            $bulk = $request->bulkSmsRequest($this->id, $content);
-        }
+        $bulk = $request->bulkSmsRequest($this->id, $content);
 
         // if bulk request failed
         if($bulk !== true) {
