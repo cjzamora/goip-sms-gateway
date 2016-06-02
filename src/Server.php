@@ -59,7 +59,7 @@ class Server extends Event
      * @var bool
      */
     protected $end = false;
-    
+
     /**
      * Origin information.
      *
@@ -91,12 +91,6 @@ class Server extends Event
 
         // if socket failed to be created
         if($this->socket < 0) {
-            // set event message
-            $message = 'Failed to create socket: ' . socket_strerror($this->socket) . PHP_EOL;
-
-            // throw an event
-            $this->trigger('server-error', $message);
-
             // exit
             exit();
         }
@@ -105,16 +99,7 @@ class Server extends Event
         $bind = socket_bind($this->socket, $this->host, $this->port);
 
         // if socket failed to bind address
-        if($bind < 0) {
-            // get error string
-            $error   = socket_strerror($bind);
-
-            // set event message
-            $message = 'Failed to bind socket to: ' . $this->host . ':' . $this->port . ' ' . $error . PHP_EOL;
-
-            // throw an event
-            $this->trigger('server-error', $message);
-
+        if($bind < 0 || socket_last_error() > 0) {
             // exit
             exit();
         }
