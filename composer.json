@@ -1,0 +1,15 @@
+{
+    "name": "cjzamora/goip-sms-gateway",
+    "description": "GoIP SMS Gateway Interface API Client / Server",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Charles Zamora",
+            "email": "charles.andacc@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.1",
+    }
+}

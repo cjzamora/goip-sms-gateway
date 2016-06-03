@@ -37,7 +37,7 @@ try {
     // to send an sms request to channel 1
     ->setPort(9991)
     // send an sms request
-    ->sendSms('BAL', '222');
+    ->sendSms('BAL', '8888');
 
     echo 'Message Successfully Sent!';
 } catch(\Exception $e) {
