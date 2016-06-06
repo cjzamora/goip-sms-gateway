@@ -20,7 +20,7 @@ require dirname(__DIR__) . '/src/Request.php';
 //   will actually serve as the
 //   GSM Module channel, for example
 //   first channel is 9991, if we have
-//   8 channel GSM Modele the port range
+//   8 channel GSM Module the port range
 //   will be 9991-9998 etc. 9991 will be
 //   the default channel.
 $client = new GoIP\Client('192.168.1.42');
