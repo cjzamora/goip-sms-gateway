@@ -1,4 +1,4 @@
-GoIP SMS Gateway Interface API Client / Server
+GoIP SMS Gateway Interface API (Client & Server)
 ===
 
 This library is using the GoIP SMS Interface instead of the VoIP / SMPP Interface,
