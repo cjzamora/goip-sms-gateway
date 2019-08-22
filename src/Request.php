@@ -201,12 +201,13 @@ class Request extends Base
         // get the submit number request
         $message = $this->message()->getConstant('SUBMIT_NUMBER_REQUEST', $this->sendId, rand(1, 100), $number);
 
+        // send request
+        if($this->send($message) < 0) {
+            return false;
+        }
+        
         // get the response until we got OK | ERROR
         foreach(range(1, 30) as $value) {
-            // send request
-            if($this->send($message) < 0) {
-                return false;
-            }
 
             // get the response
             $response = $this->get('SubmitNumberRequest', 1);
